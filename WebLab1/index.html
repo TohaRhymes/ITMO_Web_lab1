@@ -72,7 +72,7 @@
         iframe {
             border-width: 0px;
             width: 100%;
-            height: 290px;
+            height: 270px;
         }
 
     </style>
@@ -95,7 +95,6 @@
 </div>
 
 <div class="main">
-
     <table width="100%">
         <tr>
             <th colspan="2"> Определение попадания точки в область</th>
@@ -118,7 +117,7 @@
                             <option value="4">4</option>
                         </select></p>
                         <p class="inputField"><b>Координата Y:</b>
-                            <input id="Y" name="Y" placeholder="Число от -5 до 3." size="20px" type="text">
+                            <input id="Y" name="Y" placeholder="Целое число от -5 до 3." size="20px" type="text">
                         </p>
                         <p class="inputField">Радиус R: <select name="R" required>
                             <option disabled selected></option>
@@ -167,7 +166,7 @@
     }
 
     function isNumber(n) {
-        return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
+        return /^-?[\d.]$/.test(n);
     }
 
     function check(n) {
