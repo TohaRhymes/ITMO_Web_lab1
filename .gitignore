@@ -1,2 +1,4 @@
-11.file
-WebLab1/
+WebLab2/
+\.idea/
+*/\.idea
+\.sample.txt
