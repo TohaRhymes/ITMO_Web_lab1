@@ -57,7 +57,12 @@ if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x
 //        </tr>
 //    </table>';
     echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
-                    
+                   <figure class="img">
+                        <img height="130px"
+                             src="img\yes.png"
+                             width="130px"
+                        >
+                    </figure> 
                 </p>';
 } else {
 //    echo '<table id = "script">
@@ -75,7 +80,12 @@ if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x
 //        </tr>
 //    </table>';
     echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
-                    
+                    <figure class="img">
+                        <img height="130px"
+                             src="img\no.png"
+                             width="130px"
+                        >
+                    </figure>
                 </p>';
 }
 $t = (float)round((microtime(true) - $start), 4);
