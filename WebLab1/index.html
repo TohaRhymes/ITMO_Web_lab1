@@ -39,7 +39,7 @@
             padding: 1px 5px 1px;
             display: block;
             background: rgb(45, 184, 108);
-            color: white;
+            color: #ffffff;
             width: 650px;
             height: 100%;
             font-family: "Arial", sans-serif;
@@ -102,9 +102,10 @@
         <tr>
             <th width="50%">
                 <table width="100%">
-                    <form action="select.php" method="get" onsubmit="return check(document.getElementById('Y').value)"
+                    <form action="select.php" method="get"
+                          onsubmit="return checkAndDraw(document.getElementById('X').value, document.getElementById('Y').value, document.getElementById('R').value)"
                           target="answer">
-                        <p class="inputField">Координата X: <select name="X" required>
+                        <p class="inputField">Координата X: <select id="X" name="X" required>
                             <option disabled selected></option>
                             <option value="-4">-4</option>
                             <option value="-3">-3</option>
@@ -117,9 +118,9 @@
                             <option value="4">4</option>
                         </select></p>
                         <p class="inputField"><b>Координата Y:</b>
-                            <input id="Y" name="Y" placeholder="Целое число от -5 до 3." size="20px" type="text">
+                            <input id="Y" name="Y" placeholder="Число от -5 до 3." size="20px" type="text">
                         </p>
-                        <p class="inputField">Радиус R: <select name="R" required>
+                        <p class="inputField">Радиус R: <select id="R" name="R" required>
                             <option disabled selected></option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -133,11 +134,8 @@
                 </table>
             </th>
             <th width="50%">
-                <figure class="img">
-                    <img
-                            src="img/areas.png"
-                    >
-                </figure>
+                <canvas id="canvas" width=237px height=215px></canvas>
+                <img width="0" height="0" src='img/areas.png' id='img'/>
             </th>
         </tr>
         <tr>
@@ -160,28 +158,63 @@
     //     }
     // }
 
+    //В нижеследующем коде растягивается канвас и вставляется картинка графика
+    function ge(id) {
+        return document.getElementById(id);
+    }
+
+    const canvas = ge('canvas');
+    const ctx = canvas.getContext('2d');
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const img = ge('img');
+    ctx.drawImage(img, 0, 0);
+    ctx.fill();
+    //Растянули canvas
+
+    //Установка точки на графике
+    var circle = function (x, y, r) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.drawImage(img, 0, 0);
+        ctx.arc(x, y, r, 0, Math.PI * 2, false);
+        ctx.fill();
+
+    }
+    var drawDote = function (x, y) {
+        dote = circle(x, y, 3)
+    }
+
+    var dote;
+
 
     function makeYWhite() {
         document.getElementById('Y').style.backgroundColor = "#ffffff";
     }
 
     function isNumber(n) {
-        return /^-?[\d.]$/.test(n);
+        return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
     }
 
-    function check(n) {
-        var f = isNumber(n);
+    function checkAndDraw(x, y, r) {
+        console.log(y);
+        var f = isNumber(y);
         if (!f) {
             document.getElementById('Y').style.backgroundColor = "#ff7679";
-            alert("В поле координаты Y введите ЦЕЛОЕ число от -5 до 3!");
+            alert("В поле координаты Y введите число от -5 до 3!");
             return false;
         } else {
-            if (n >= -5 && n <= 3) {
+            if (y >= -5 && y <= 3) {
                 document.getElementById('Y').style.backgroundColor = "#ffffff";
+                console.log(document.getElementById('X').value);
+                var canvasX = 110.5 + (x / r) * 79;
+                var canvasY = 110 - (y / r) * 79;
+                drawDote(canvasX, canvasY);
                 return true;
             } else {
                 document.getElementById('Y').style.backgroundColor = "#ff7679";
-                alert("В поле координаты Y введите ЦЕЛОЕ число от -5 до 3!");
+                alert("В поле координаты Y введите число от -5 до 3!");
                 return false;
             }
         }
