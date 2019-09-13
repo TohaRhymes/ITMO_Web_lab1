@@ -130,7 +130,9 @@ date_default_timezone_set("UTC") ?>
 
         if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
             die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
-
+        echo count($_GET);
+        if (count($_GET)!=3)
+            die ('<p id = \'scriptError\'>Очень странные данные! o_0</p>');
         $x = $_GET['X'];
         $y = $_GET['Y'];
         $r = $_GET['R'];
@@ -189,7 +191,7 @@ date_default_timezone_set("UTC") ?>
 
         <p>Запрос выполнен. Время работы
             скрипта: <?php printf("%2.3f", (microtime(true) - $BEGIN_MS) * 1000) ?> миллисекунд</p>
-        <form action="./index.html">
+        <form action="index.php">
             <input class="button" type="submit" value="BACK">
         </form>
     </table>

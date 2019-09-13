@@ -59,11 +59,11 @@
             background: -webkit-gradient(linear, 0 0, 0 100%, from(#6ed54b), to(#d3ffc9));
         }
 
-        .button:hover {
-            color: black;
-            border-color: #6ccf5a;
-            background: -webkit-gradient(linear, 0 0, 0 100%, from(#6ed54b), to(#289c44));
-        }
+        /*.button:hover {*/
+        /*    color: black;*/
+        /*    border-color: #6ccf5a;*/
+        /*    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6ed54b), to(#289c44));*/
+        /*}*/
 
         #button1 {
             margin: 0px 5px 0px 70px;
@@ -79,7 +79,61 @@
             height: 270px;
         }
 
+        #Y:invalid{
+            background-color: red;
+        }
+
     </style>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        $(document).ready (function () {-->
+<!--            // блокируем кнопку отправки до того момента, пока все поля не будут проверены-->
+<!--            $('.submit').prop('disabled', true);-->
+<!---->
+<!--            // elements содержит количество элементов для валидации-->
+<!--            var elements = $('.validation').length;-->
+<!---->
+<!--            // has содержит количество элементов успешно прощедших валидацию-->
+<!--            var has;-->
+<!---->
+<!--            // при изменении значения поля-->
+<!--            $('.validation').change(function() {-->
+<!---->
+<!--                // формируем массив для отправки на сервер, нас интересуют значение поля и css-классы-->
+<!--                //на сервере массив будет доступен в виде $_POST['validation']['name']['value'] и т.п.-->
+<!--                var name = $(this).attr('name');-->
+<!--                var data = {};-->
+<!--                data['validation[' + name + '][value]'] = $(this).val();-->
+<!--                data['validation[' + name + '][class]'] = $(this).attr('class');-->
+<!---->
+<!--                // делаем ajax-запрос методом POST на текущий адрес, в ответ ждем данные HTML-->
+<!--                $.ajax({-->
+<!--                    type: 'POST',-->
+<!--                    url: '',-->
+<!--                    dataType: 'html',-->
+<!--                    data: data,-->
+<!--                    // до выполнения запроса удаляем блок с предыдущими сообщениями-->
+<!--                    beforeSend: function()-->
+<!--                    {-->
+<!--                        $('#row-' + name + ' div.msg').remove();-->
+<!--                    },-->
+<!--                    // в случае удачного выполнения добавляем блок с сообщением-->
+<!--                    success: function(msg)-->
+<!--                    {-->
+<!--                        $('#row-' + name).append(msg);-->
+<!--                    }-->
+<!--                });-->
+<!---->
+<!--                // проверяем, все ли поля прошли валидацию (признак - css-класс "ok" у блока сообщения) и разблокируем кнопку отправки на сервер-->
+<!--                has = $('.row:has(div.ok)').length + 1;-->
+<!--                if (has == elements)-->
+<!--                {-->
+<!--                    $('.submit').prop('disabled', false);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 </head>
 <body>
 <div class="header">
@@ -109,7 +163,7 @@
                     <form action="select.php" method="get"
                           onsubmit="return checkAndDraw(document.getElementById('X').value, document.getElementById('Y').value, document.getElementById('R').value)"
                           >
-                        <p class="inputField">Координата X: <select id="X" name="X" required>
+                        <p class="inputField">Координата X: <select id="X" name="X" required class="validation noempty">
                             <option disabled selected></option>
                             <option value="-4">-4</option>
                             <option value="-3">-3</option>
@@ -122,9 +176,9 @@
                             <option value="4">4</option>
                         </select></p>
                         <p class="inputField">Координата Y:
-                            <input id="Y" name="Y" placeholder="Число от -5 до 3." size="20px" type="text">
+                            <input class="validation noempty" id="Y" name="Y" placeholder="Число от -5 до 3." size="20px" type="text" >
                         </p>
-                        <p class="inputField">Радиус R: <select id="R" name="R" required>
+                        <p class="inputField">Радиус R: <select class="validation noempty" id="R" name="R" required>
                             <option disabled selected></option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -133,8 +187,9 @@
                             <option value="5">5</option>
                         </select></p>
                         <p><input class="button" id="button1" type="submit" value="Отправить">
-                            <input class="button" onclick="makeYWhite()" type="reset" value="Очистить"></p>
+                            <input class="submit button" onclick="makeYWhite()" type="reset" value="Очистить"></p>
                     </form>
+                    <div id="ans"> </div>
                 </table>
             </td>
             <td width="50%">
@@ -155,6 +210,7 @@
 </div>
 
 <script>
+
     // var code = prompt("Это секретная разработка, введи пин, чтобы получить доступ. У тебя одна попытка!");
     // if(!check(code)||code != 12345){
     //     while(true){
@@ -201,12 +257,42 @@
         return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
     }
 
+
+    // function checkAndDraw(form) {
+    //
+    //     var fail;
+    //
+    //
+    //     console.log(y);
+    //     var f = isNumber(y);
+    //     if (!f) {
+    //         document.getElementById('Y').style.backgroundColor = "#ff7679";
+    //         alert("В поле координаты Y введите число от -5 до 3!");
+    //         return false;
+    //     } else {
+    //         if (y >= -5 && y <= 3) {
+    //             document.getElementById('Y').style.backgroundColor = "#ffffff";
+    //             console.log(document.getElementById('X').value);
+    //             var canvasX = 110.5 + (x / r) * 79;
+    //             var canvasY = 110 - (y / r) * 79;
+    //             drawDote(canvasX, canvasY);
+    //             return true;
+    //         } else {
+    //             document.getElementById('Y').style.backgroundColor = "#ff7679";
+    //             alert("В поле координаты Y введите число от -5 до 3!");
+    //             return false;
+    //         }
+    //     }
+    // }
+
     function checkAndDraw(x, y, r) {
         console.log(y);
+        var mes;
         var f = isNumber(y);
         if (!f) {
             document.getElementById('Y').style.backgroundColor = "#ff7679";
-            alert("В поле координаты Y введите число от -5 до 3!");
+            mes = "В поле координаты Y введите число от -5 до 3!";
+            document.getElementById("ans").innerHTML=mes;
             return false;
         } else {
             if (y >= -5 && y <= 3) {
@@ -218,11 +304,35 @@
                 return true;
             } else {
                 document.getElementById('Y').style.backgroundColor = "#ff7679";
-                alert("В поле координаты Y введите число от -5 до 3!");
+                mes = "В поле координаты Y введите число от -5 до 3!";
+                document.getElementById("ans").innerHTML=mes;
                 return false;
             }
         }
     }
+
+
+
+    function makeFrame(id){
+        var iframe = document.getElementById(id);
+        iframe.style.display="block";
+        frameFitting(id);
+        for (var i=0; i<iframe.length; i++) {
+            iframe[i].onclick = function() {
+                clearInterval(timeout);
+                timeout = setInterval("frameFitting(id)",100);
+            }
+        }
+    }
+
+    function frameFitting(id) {
+        document.getElementById(id).width = '100%';
+        document.getElementById(id).height = document.getElementById(id).contentWindow.
+            document.body.scrollHeight+35+'px';
+    }
+
+
+
 </script>
 
 </body>
