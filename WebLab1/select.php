@@ -23,6 +23,25 @@
             text-align: center;
         }
     </style>
+    <script>
+        function clock() {
+            let d = new Date();
+            let hours = d.getHours();
+            let minutes = d.getMinutes();
+            let seconds = d.getSeconds();
+
+            if (hours <= 9) hours = "0" + hours;
+            if (minutes <= 9) minutes = "0" + minutes;
+            if (seconds <= 9) seconds = "0" + seconds;
+
+            let date_time = hours + ":" + minutes + ":" + seconds;
+            if (document.layers) {
+                document.layers.doc_time.document.write(date_time);
+                document.layers.doc_time.document.close();
+            } else document.getElementById("doc_time").innerHTML = date_time;
+            setTimeout("clock()", 1000);
+        }
+    </script>
 </head>
 <body>
 
@@ -30,14 +49,15 @@
 $start = microtime(true);
 date_default_timezone_set("UTC");
 $time = time() + 3 * 3600;
-echo "<p id='script'>Текущее время: " . date("H:i:s",
-        $time) . "</p>";
+echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
 
-if (empty($_GET['X']) || empty($_GET['Y']) || empty($_GET['R']))
+if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
     die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
+
 $x = $_GET['X'];
 $y = $_GET['Y'];
 $r = $_GET['R'];
+
 if (!preg_match('/(?<![\.\d])\d+(?![\.\d])/', $x) || !is_numeric($y) || !preg_match('/(?<![\.\d])\d+(?![\.\d])/', $r) || $x < -4 || $x > 4 || $y < -5 || $y > 3 || $r < 1 || $r > 5)
     die ("<p id = 'scriptError'>ATTENTION! o_0</p> <p id = 'scriptError'>X и R должны быть целыми числами, x от -4 до 4, r от 1 до 5. Y числом  от -5 до 3.</p>");
 
