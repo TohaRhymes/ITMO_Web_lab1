@@ -1,27 +1,88 @@
+<?php
+$BEGIN_MS = microtime(true);
+$CORRECT = true;
+date_default_timezone_set("UTC") ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>response page</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Lab 1</title>
     <style>
-        #script {
+        body {
+            background-image: url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");
+        }
+
+        .header {
+            overflow: hidden; /*Видимость вылезших элементов*/
+            background: #007765;
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            width: 100%;
+            height: 120px;
+            /*text-align: right;*/
+        }
+
+        #logo {
+            float: left;
+        }
+
+        #info {
+            /*text-align: center;*/
+            color: white;
+            font-family: sans-serif;
+            font-size: 16px;
+            margin: 0px 10px 0px;
+            float: right;
+        }
+
+        .main {
+            margin: 120px auto 0px;
+            padding: 1px 5px 1px;
+            display: block;
+            background: rgb(45, 184, 108);
+            color: #ffffff;
+            width: 650px;
+            height: 100%;
             font-family: "Arial", sans-serif;
             font-style: normal;
-            text-align: center;
         }
 
-        #scriptError {
-            font-family: "Arial", sans-serif;
-            font-style: normal;
-            font-size: 150%;
-            color: red;
-            text-align: center;
-
+        .inputField {
+            text-align: left;
+            margin: 30px 10px;
         }
 
-        .img {
-            text-align: center;
+        .button {
+            color: black;
+            border-color: #94f559;
+            border-style: ridge;
+            border-radius: 10px;
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#6ed54b), to(#d3ffc9));
         }
+
+        .button:hover {
+            color: black;
+            border-color: #6ccf5a;
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#6ed54b), to(#289c44));
+        }
+
+        #button1 {
+            margin: 0px 5px 0px 70px;
+        }
+
+        /*.button:focus {*/
+        /*    color: white;*/
+        /*}*/
+
+        iframe {
+            border-width: 0px;
+            width: 100%;
+            height: 270px;
+        }
+
     </style>
     <script>
         function clock() {
@@ -44,24 +105,40 @@
     </script>
 </head>
 <body>
+<div class="header">
+    <div id="logo">
+        <figure class="img">
+            <img height="85px"
+                 src="img/vt_logo.png"
+                 width="85px"
+            >
+        </figure>
+    </div>
+    <div id="info">
+        <p>Чангалиди Антон Ильич</p>
+        <p>P3214</p>
+        <p>Вариант 214020</p>
+    </div>
+</div>
 
-<?php
-$start = microtime(true);
-date_default_timezone_set("UTC");
-$time = time() + 3 * 3600;
-echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
+<div class="main">
+    <table width="100%">
+        <h1>Результат проверки</h1>
+        <?php
 
-if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
-    die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
+        echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
 
-$x = $_GET['X'];
-$y = $_GET['Y'];
-$r = $_GET['R'];
+        if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
+            die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
 
-if (!preg_match('/(?<![\.\d])\d+(?![\.\d])/', $x) || !is_numeric($y) || !preg_match('/(?<![\.\d])\d+(?![\.\d])/', $r) || $x < -4 || $x > 4 || $y < -5 || $y > 3 || $r < 1 || $r > 5)
-    die ("<p id = 'scriptError'>ATTENTION! o_0</p> <p id = 'scriptError'>X и R должны быть целыми числами, x от -4 до 4, r от 1 до 5. Y числом  от -5 до 3.</p>");
+        $x = $_GET['X'];
+        $y = $_GET['Y'];
+        $r = $_GET['R'];
 
-if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x ** 2 <= $r ** 2 || $y < 0 && $x < 0 && $y >= -$r / 2 && $x >= -$r) {
+        if (!preg_match('/(?<![\.\d])\d+(?![\.\d])/', $x) || !is_numeric($y) || !preg_match('/(?<![\.\d])\d+(?![\.\d])/', $r) || $x < -4 || $x > 4 || $y < -5 || $y > 3 || $r < 1 || $r > 5)
+            die ("<p id = 'scriptError'>ATTENTION! o_0</p> <p id = 'scriptError'>X и R должны быть целыми числами, x от -4 до 4, r от 1 до 5. Y числом  от -5 до 3.</p>");
+
+        if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x ** 2 <= $r ** 2 || $y < 0 && $x < 0 && $y >= -$r / 2 && $x >= -$r) {
 //    echo '<table id = "script">
 //        <tr>
 //            <th>X</th>
@@ -76,7 +153,7 @@ if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x
 //            <th>НЕТ</th>
 //        </tr>
 //    </table>';
-    echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
+            echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
                    <figure class="img">
                         <img height="130px"
                              src="img\yes.png"
@@ -84,7 +161,7 @@ if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x
                         >
                     </figure> 
                 </p>';
-} else {
+        } else {
 //    echo '<table id = "script">
 //        <tr>
 //            <th>X</th>
@@ -99,7 +176,7 @@ if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x
 //            <th>НЕТ</th>
 //        </tr>
 //    </table>';
-    echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
+            echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
                     <figure class="img">
                         <img height="130px"
                              src="img\no.png"
@@ -107,9 +184,20 @@ if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x
                         >
                     </figure>
                 </p>';
-}
-$t = (float)round((microtime(true) - $start), 4);
-if ($t == 0) $t = "менее 0.0001";
-echo "<p id='script'> Время работы скрипта: " . $t . " сек</p>";
+        }
+        ?>
 
-?>
+        <p>Запрос выполнен. Время работы
+            скрипта: <?php printf("%2.3f", (microtime(true) - $BEGIN_MS) * 1000) ?> миллисекунд</p>
+        <form action="./index.html">
+            <input class="button" type="submit" value="BACK">
+        </form>
+    </table>
+
+
+</div>
+
+
+
+</body>
+</html>
