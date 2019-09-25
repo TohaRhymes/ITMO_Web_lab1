@@ -191,7 +191,7 @@ date_default_timezone_set("UTC") ?>
 
         <p>Запрос выполнен. Время работы
             скрипта: <?php printf("%2.3f", (microtime(true) - $BEGIN_MS) * 1000) ?> миллисекунд</p>
-        <form action="index.php">
+        <form action="index.html">
             <input class="button" type="submit" value="BACK">
         </form>
     </table>
