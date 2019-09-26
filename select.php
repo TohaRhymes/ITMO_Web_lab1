@@ -9,7 +9,8 @@ date_default_timezone_set("UTC") ?>
     <title>Lab 1</title>
     <style>
         body {
-            background-image: url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");
+            background-image: url("img/back.png");
+            /*url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");*/
         }
 
         .header {
@@ -56,6 +57,8 @@ date_default_timezone_set("UTC") ?>
         }
 
         .button {
+            float: right;
+            margin: 5px 20px 15px;
             color: black;
             border-color: #94f559;
             border-style: ridge;
@@ -81,6 +84,11 @@ date_default_timezone_set("UTC") ?>
             border-width: 0px;
             width: 100%;
             height: 270px;
+        }
+
+        #doc_time {
+            font-family: Serif;
+            font-size: 150%;
         }
 
     </style>
@@ -123,24 +131,25 @@ date_default_timezone_set("UTC") ?>
 
 <div class="main">
     <table width="100%">
-        <h1>Результат проверки</h1>
-        <?php
+        <tr>
+            <td>
+                <h1>Результат проверки</h1>
+                <?php
 
-        echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
+                echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
 
-        if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
-            die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
-        echo count($_GET);
-        if (count($_GET)!=3)
-            die ('<p id = \'scriptError\'>Очень странные данные! o_0</p>');
-        $x = $_GET['X'];
-        $y = $_GET['Y'];
-        $r = $_GET['R'];
+                if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
+                    die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
+                if (count($_GET) != 3)
+                    die ('<p id = \'scriptError\'>Очень странные данные! o_0</p>');
+                $x = $_GET['X'];
+                $y = $_GET['Y'];
+                $r = $_GET['R'];
 
-        if (!preg_match('/(?<![\.\d])\d+(?![\.\d])/', $x) || !is_numeric($y) || !preg_match('/(?<![\.\d])\d+(?![\.\d])/', $r) || $x < -4 || $x > 4 || $y < -5 || $y > 3 || $r < 1 || $r > 5)
-            die ("<p id = 'scriptError'>ATTENTION! o_0</p> <p id = 'scriptError'>X и R должны быть целыми числами, x от -4 до 4, r от 1 до 5. Y числом  от -5 до 3.</p>");
+                if (!preg_match('/(?<![\.\d])\d+(?![\.\d])/', $x) || !is_numeric($y) || !preg_match('/(?<![\.\d])\d+(?![\.\d])/', $r) || $x < -4 || $x > 4 || $y < -5 || $y > 3 || $r < 1 || $r > 5)
+                    die ("<p id = 'scriptError'>ATTENTION! o_0</p> <p id = 'scriptError'>X и R должны быть целыми числами, x от -4 до 4, r от 1 до 5. Y числом  от -5 до 3.</p>");
 
-        if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x ** 2 <= $r ** 2 || $y < 0 && $x < 0 && $y >= -$r / 2 && $x >= -$r) {
+                if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x ** 2 <= $r ** 2 || $y < 0 && $x < 0 && $y >= -$r / 2 && $x >= -$r) {
 //    echo '<table id = "script">
 //        <tr>
 //            <th>X</th>
@@ -155,15 +164,15 @@ date_default_timezone_set("UTC") ?>
 //            <th>НЕТ</th>
 //        </tr>
 //    </table>';
-            echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
+                    echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
                    <figure class="img">
                         <img height="130px"
                              src="img\yes.png"
                              width="130px"
                         >
-                    </figure> 
+                    </figure>
                 </p>';
-        } else {
+                } else {
 //    echo '<table id = "script">
 //        <tr>
 //            <th>X</th>
@@ -178,7 +187,7 @@ date_default_timezone_set("UTC") ?>
 //            <th>НЕТ</th>
 //        </tr>
 //    </table>';
-            echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
+                    echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
                     <figure class="img">
                         <img height="130px"
                              src="img\no.png"
@@ -186,20 +195,164 @@ date_default_timezone_set("UTC") ?>
                         >
                     </figure>
                 </p>';
-        }
-        ?>
+                }
+                ?>
 
-        <p>Запрос выполнен. Время работы
-            скрипта: <?php printf("%2.3f", (microtime(true) - $BEGIN_MS) * 1000) ?> миллисекунд</p>
-        <form action="index.html">
-            <input class="button" type="submit" value="BACK">
-        </form>
+                <p>Запрос выполнен. Время работы
+                    скрипта: <?php printf("%2.3f", (microtime(true) - $BEGIN_MS) * 1000) ?> миллисекунд</p>
+
+            </td>
+            <td>
+                <figure class="img">
+                    <img height="100%"
+                         src="img/areas.png"
+                         width="100%"
+                    >
+                </figure>
+                <!--    todo：это кудато деть-->
+<!--            <td width="50%">-->
+<!--                <canvas id="canvas" width=237px height=215px></canvas>-->
+<!--                <img width="0" height="0" src='img/areas.png' id='img'/>-->
+<!--            </td>-->
+
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <form action="index.html">
+                    <input class="button" type="submit" value="BACK">
+                </form>
+            </td>
+        </tr>
     </table>
 
 
 </div>
 
 
+<!--<script>-->
+<!---->
+<!--    // var code = prompt("Это секретная разработка, введи пин, чтобы получить доступ. У тебя одна попытка!");-->
+<!--    // if(!check(code)||code != 12345){-->
+<!--    //     while(true){-->
+<!--    //         alert("Доступ заблокирован.");-->
+<!--    //     }-->
+<!--    // }-->
+<!---->
+<!--    //В нижеследующем коде растягивается канвас и вставляется картинка графика-->
+<!--    function ge(id) {-->
+<!--        return document.getElementById(id);-->
+<!--    }-->
+<!---->
+<!--    const canvas = ge('canvas');-->
+<!--    const ctx = canvas.getContext('2d');-->
+<!--    const canvasWidth = canvas.width;-->
+<!--    const canvasHeight = canvas.height;-->
+<!--    const img = ge('img');-->
+<!--    ctx.drawImage(img, 0, 0);-->
+<!--    ctx.fill();-->
+<!--    //Растянули canvas-->
+<!---->
+<!--    //Установка точки на графике-->
+<!--    var circle = function (x, y, r) {-->
+<!--        ctx.clearRect(0, 0, canvas.width, canvas.height);-->
+<!--        ctx.fillStyle = "white";-->
+<!--        ctx.beginPath();-->
+<!--        ctx.drawImage(img, 0, 0);-->
+<!--        ctx.arc(x, y, r, 0, Math.PI * 2, false);-->
+<!--        ctx.fill();-->
+<!---->
+<!--    }-->
+<!--    var drawDote = function (x, y) {-->
+<!--        dote = circle(x, y, 3)-->
+<!--    }-->
+<!---->
+<!--    var dote;-->
+<!---->
+<!---->
+<!--    function makeYWhite() {-->
+<!--        document.getElementById('Y').style.backgroundColor = "#ffffff";-->
+<!--    }-->
+<!---->
+<!--    function isNumber(n) {-->
+<!--        return /^-?[\d.]+(?:e-?\d+)?$/.test(n);-->
+<!--    }-->
+<!---->
+<!---->
+<!--    // function checkAndDraw(form) {-->
+<!--    //-->
+<!--    //     var fail;-->
+<!--    //-->
+<!--    //-->
+<!--    //     console.log(y);-->
+<!--    //     var f = isNumber(y);-->
+<!--    //     if (!f) {-->
+<!--    //         document.getElementById('Y').style.backgroundColor = "#ff7679";-->
+<!--    //         alert("В поле координаты Y введите число от -5 до 3!");-->
+<!--    //         return false;-->
+<!--    //     } else {-->
+<!--    //         if (y >= -5 && y <= 3) {-->
+<!--    //             document.getElementById('Y').style.backgroundColor = "#ffffff";-->
+<!--    //             console.log(document.getElementById('X').value);-->
+<!--    //             var canvasX = 110.5 + (x / r) * 79;-->
+<!--    //             var canvasY = 110 - (y / r) * 79;-->
+<!--    //             drawDote(canvasX, canvasY);-->
+<!--    //             return true;-->
+<!--    //         } else {-->
+<!--    //             document.getElementById('Y').style.backgroundColor = "#ff7679";-->
+<!--    //             alert("В поле координаты Y введите число от -5 до 3!");-->
+<!--    //             return false;-->
+<!--    //         }-->
+<!--    //     }-->
+<!--    // }-->
+<!---->
+<!--    function checkAndDraw(x, y, r) {-->
+<!--        console.log(y);-->
+<!--        var mes;-->
+<!--        var f = isNumber(y);-->
+<!--        if (!f) {-->
+<!--            document.getElementById('Y').style.backgroundColor = "#ff7679";-->
+<!--            mes = "В поле координаты Y введите число от -5 до 3!";-->
+<!--            document.getElementById("ans").innerHTML = mes;-->
+<!--            return false;-->
+<!--        } else {-->
+<!--            if (y >= -5 && y <= 3) {-->
+<!--                document.getElementById('Y').style.backgroundColor = "#ffffff";-->
+<!--                console.log(document.getElementById('X').value);-->
+<!--                var canvasX = 110.5 + (x / r) * 79;-->
+<!--                var canvasY = 110 - (y / r) * 79;-->
+<!--                drawDote(canvasX, canvasY);-->
+<!--                return true;-->
+<!--            } else {-->
+<!--                document.getElementById('Y').style.backgroundColor = "#ff7679";-->
+<!--                mes = "В поле координаты Y введите число от -5 до 3!";-->
+<!--                document.getElementById("ans").innerHTML = mes;-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+<!---->
+<!---->
+<!--    function makeFrame(id) {-->
+<!--        var iframe = document.getElementById(id);-->
+<!--        iframe.style.display = "block";-->
+<!--        frameFitting(id);-->
+<!--        for (var i = 0; i < iframe.length; i++) {-->
+<!--            iframe[i].onclick = function () {-->
+<!--                clearInterval(timeout);-->
+<!--                timeout = setInterval("frameFitting(id)", 100);-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+<!---->
+<!--    function frameFitting(id) {-->
+<!--        document.getElementById(id).width = '100%';-->
+<!--        document.getElementById(id).height = document.getElementById(id).contentWindow.document.body.scrollHeight + 35 + 'px';-->
+<!--    }-->
+<!---->
+<!---->
+<!--</script>-->
 
 </body>
 </html>

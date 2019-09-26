@@ -60,7 +60,7 @@
         }
 
         .submit-button {
-            margin: 15px 5px 0px 70px;
+            margin: 15px 5px 5px 70px;
             color: black;
             border-color: #94f559;
             border-style: ridge;
@@ -74,12 +74,11 @@
             background: -webkit-gradient(linear, 0 0, 0 100%, from(#6ed54b), to(#289c44));
         }
 
-        .submit-button:focus {
-            color: white;
-        }
+
 
         .submit-button:disabled {
-            background: #d7d7d7;
+            border-color: rgba(9, 90, 27, 0.82));
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(11, 156, 39, 0.54)), to(#83a07c));
             color: grey;
         }
 
@@ -135,7 +134,7 @@
                     <form id="inputForm" action="select.php" method="get">
                         <h2>Координата X:</h2>
                         <label>
-                            <select id="X" name="X">
+                            <select name="X">
                                 <option disabled selected></option>
                                 <option value="-4">-4</option>
                                 <option value="-3">-3</option>
@@ -154,7 +153,7 @@
 
                         <h2>Координата Y:</h2>
                         <label>
-                            <input id="Y" name="Y" placeholder="Число от -5 до 3." size="20px" type="text"
+                            <input name="Y" placeholder="Число от -5 до 3." size="20px" type="text"
                                    onkeyup="checkY(event);">
                         </label>
                         <p class="warn-checkbox" hidden>Введено не число.</p>
@@ -165,7 +164,7 @@
 
                         <h2>Радиус R:</h2>
                         <label>
-                            <select id="R" name="R">
+                            <select name="R">
                                 <option disabled selected></option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -190,18 +189,8 @@
                     >
                 </figure>
             </td>
-            <!--            <td width="50%">-->
-            <!--                <canvas id="canvas" width=237px height=215px></canvas>-->
-            <!--                <img width="0" height="0" src='img/areas.png' id='img'/>-->
-            <!--            </td>-->
+
         </tr>
-        <!--        <tr>-->
-        <!--            <td colspan="2">-->
-        <!--                <p>-->
-        <!--                    <iframe name="answer"></iframe>-->
-        <!--                </p>-->
-        <!--            </td>-->
-        <!--        </tr>-->
     </table>
 
 
@@ -360,128 +349,7 @@
     }
 </script>
 
-<script>
 
-    // var code = prompt("Это секретная разработка, введи пин, чтобы получить доступ. У тебя одна попытка!");
-    // if(!check(code)||code != 12345){
-    //     while(true){
-    //         alert("Доступ заблокирован.");
-    //     }
-    // }
-
-    //В нижеследующем коде растягивается канвас и вставляется картинка графика
-    function ge(id) {
-        return document.getElementById(id);
-    }
-
-    const canvas = ge('canvas');
-    const ctx = canvas.getContext('2d');
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-    const img = ge('img');
-    ctx.drawImage(img, 0, 0);
-    ctx.fill();
-    //Растянули canvas
-
-    //Установка точки на графике
-    var circle = function (x, y, r) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.drawImage(img, 0, 0);
-        ctx.arc(x, y, r, 0, Math.PI * 2, false);
-        ctx.fill();
-
-    }
-    var drawDote = function (x, y) {
-        dote = circle(x, y, 3)
-    }
-
-    var dote;
-
-
-    function makeYWhite() {
-        document.getElementById('Y').style.backgroundColor = "#ffffff";
-    }
-
-    function isNumber(n) {
-        return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
-    }
-
-
-    // function checkAndDraw(form) {
-    //
-    //     var fail;
-    //
-    //
-    //     console.log(y);
-    //     var f = isNumber(y);
-    //     if (!f) {
-    //         document.getElementById('Y').style.backgroundColor = "#ff7679";
-    //         alert("В поле координаты Y введите число от -5 до 3!");
-    //         return false;
-    //     } else {
-    //         if (y >= -5 && y <= 3) {
-    //             document.getElementById('Y').style.backgroundColor = "#ffffff";
-    //             console.log(document.getElementById('X').value);
-    //             var canvasX = 110.5 + (x / r) * 79;
-    //             var canvasY = 110 - (y / r) * 79;
-    //             drawDote(canvasX, canvasY);
-    //             return true;
-    //         } else {
-    //             document.getElementById('Y').style.backgroundColor = "#ff7679";
-    //             alert("В поле координаты Y введите число от -5 до 3!");
-    //             return false;
-    //         }
-    //     }
-    // }
-
-    function checkAndDraw(x, y, r) {
-        console.log(y);
-        var mes;
-        var f = isNumber(y);
-        if (!f) {
-            document.getElementById('Y').style.backgroundColor = "#ff7679";
-            mes = "В поле координаты Y введите число от -5 до 3!";
-            document.getElementById("ans").innerHTML = mes;
-            return false;
-        } else {
-            if (y >= -5 && y <= 3) {
-                document.getElementById('Y').style.backgroundColor = "#ffffff";
-                console.log(document.getElementById('X').value);
-                var canvasX = 110.5 + (x / r) * 79;
-                var canvasY = 110 - (y / r) * 79;
-                drawDote(canvasX, canvasY);
-                return true;
-            } else {
-                document.getElementById('Y').style.backgroundColor = "#ff7679";
-                mes = "В поле координаты Y введите число от -5 до 3!";
-                document.getElementById("ans").innerHTML = mes;
-                return false;
-            }
-        }
-    }
-
-
-    function makeFrame(id) {
-        var iframe = document.getElementById(id);
-        iframe.style.display = "block";
-        frameFitting(id);
-        for (var i = 0; i < iframe.length; i++) {
-            iframe[i].onclick = function () {
-                clearInterval(timeout);
-                timeout = setInterval("frameFitting(id)", 100);
-            }
-        }
-    }
-
-    function frameFitting(id) {
-        document.getElementById(id).width = '100%';
-        document.getElementById(id).height = document.getElementById(id).contentWindow.document.body.scrollHeight + 35 + 'px';
-    }
-
-
-</script>
 
 </body>
 </html>
