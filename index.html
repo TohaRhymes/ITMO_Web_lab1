@@ -270,7 +270,7 @@
             warn_y_int.hidden = false;
             warn_y_nan.hidden = true;
             warn_y_ovf.hidden = true;
-        } else if (Number(yField.value) == -5 && String(yField.value).length > 18 || Number(yField.value) == 3 && String(yField.value).length > 17) {
+        } else if (lenAfterDot(yField.value)>15) {
             event.preventDefault();
             yField.classList.add("warn-text");
             yChecked = false;
@@ -346,6 +346,13 @@
         if (n == "")
             return false;
         return /^-?[\d.]?$/.test(n);
+    }
+    function lenAfterDot(n) {
+        n = (typeof n == 'string') ? n : n.toString();
+        if (n.indexOf('e') !== -1) return parseInt(n.split('e')[1]) * -1;
+        var separator = (1.1).toString().split('1')[1];
+        var parts = n.split(separator);
+        return parts.length > 1 ? parts[parts.length - 1].length : 0;
     }
 </script>
 
