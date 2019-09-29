@@ -3,10 +3,10 @@ $BEGIN_MS = microtime(true);
 $CORRECT = true;
 date_default_timezone_set("UTC") ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Lab 1</title>
+    <title>answer</title>
     <style>
         body {
             background-image: url("img/back.png");
@@ -91,6 +91,15 @@ date_default_timezone_set("UTC") ?>
             font-size: 150%;
         }
 
+        #mes {
+            font-size: 0px;
+        }
+
+
+        .scriptError{
+            font-size: 150%;
+            color: red;
+        }
     </style>
     <script>
         function clock() {
@@ -146,10 +155,11 @@ date_default_timezone_set("UTC") ?>
                 $y = $_GET['Y'];
                 $r = $_GET['R'];
 
-                if (!preg_match('/(?<![\.\d])\d+(?![\.\d])/', $x) || !is_numeric($y) || !preg_match('/(?<![\.\d])\d+(?![\.\d])/', $r) || $x < -4 || $x > 4 || $y < -5 || $y > 3 || $r < 1 || $r > 5)
-                    die ("<p id = 'scriptError'>ATTENTION! o_0</p> <p id = 'scriptError'>X и R должны быть целыми числами, x от -4 до 4, r от 1 до 5. Y числом  от -5 до 3.</p>");
+                $justCheck = false;
+                include 'check.php';
+                if (!$justCheck) {
 
-                if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x ** 2 <= $r ** 2 || $y < 0 && $x < 0 && $y >= -$r / 2 && $x >= -$r) {
+                    if ($y >= 0 && $x >= 0 && $y + 2 * $x <= $r || $y >= 0 && $x < 0 && $y ** 2 + $x ** 2 <= $r ** 2 || $y < 0 && $x < 0 && $y >= -$r / 2 && $x >= -$r) {
 //    echo '<table id = "script">
 //        <tr>
 //            <th>X</th>
@@ -164,7 +174,7 @@ date_default_timezone_set("UTC") ?>
 //            <th>НЕТ</th>
 //        </tr>
 //    </table>';
-                    echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
+                        echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' попала в закрашенную область!
                    <figure class="img">
                         <img height="130px"
                              src="img\yes.png"
@@ -172,7 +182,7 @@ date_default_timezone_set("UTC") ?>
                         >
                     </figure>
                 </p>';
-                } else {
+                    } else {
 //    echo '<table id = "script">
 //        <tr>
 //            <th>X</th>
@@ -187,7 +197,7 @@ date_default_timezone_set("UTC") ?>
 //            <th>НЕТ</th>
 //        </tr>
 //    </table>';
-                    echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
+                        echo '<p id = "script"> Точка (' . $x . '; ' . $y . ') при параметре R = ' . $r . ' не попала в закрашенную область!
                     <figure class="img">
                         <img height="130px"
                              src="img\no.png"
@@ -195,6 +205,7 @@ date_default_timezone_set("UTC") ?>
                         >
                     </figure>
                 </p>';
+                    }
                 }
                 ?>
 
@@ -210,10 +221,10 @@ date_default_timezone_set("UTC") ?>
                     >
                 </figure>
                 <!--    todo：это кудато деть-->
-<!--            <td width="50%">-->
-<!--                <canvas id="canvas" width=237px height=215px></canvas>-->
-<!--                <img width="0" height="0" src='img/areas.png' id='img'/>-->
-<!--            </td>-->
+                <!--            <td width="50%">-->
+                <!--                <canvas id="canvas" width=237px height=215px></canvas>-->
+                <!--                <img width="0" height="0" src='img/areas.png' id='img'/>-->
+                <!--            </td>-->
 
             </td>
         </tr>
