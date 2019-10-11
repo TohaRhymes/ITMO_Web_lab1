@@ -217,8 +217,7 @@
     button.setAttribute("disabled", "disable");
 
     document.forms["inputForm"]["offset"].value = new Date().getTimezoneOffset();
-    console.log(document.forms["inputForm"]["offset"].value);
-
+    console.lo
     function check(event) {
         checkX(event);
         checkY(event);
@@ -271,10 +270,8 @@
             let xhr = new XMLHttpRequest();
             xhr.open("GET", "validation.php?X=\"\"&Y=" + yField.value + "&R=\"\"", true);
             xhr.onreadystatechange = function () {
-                console.log(xhr.responseText);
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        console.log(xhr.responseText)
                         if (xhr.responseText.includes('emptyY')) {
                             event.preventDefault();
                             yField.classList.add("warn-text");
