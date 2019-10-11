@@ -1,7 +1,9 @@
 <?php
 $BEGIN_MS = microtime(true);
-$CORRECT = true;
-date_default_timezone_set("UTC") ?>
+date_default_timezone_set("UTC");
+if (array_key_exists("offset", $_GET)) {
+    $OFFSET = $_GET["offset"];
+} else $OFFSET = 0 ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -9,8 +11,8 @@ date_default_timezone_set("UTC") ?>
     <title>answer</title>
     <style>
         body {
-            background-image: url("img/back.png");
-            /*url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");*/
+            /*background-image: url("img/back.png");*/
+            background-image: url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");
         }
 
         .header {
@@ -101,25 +103,25 @@ date_default_timezone_set("UTC") ?>
             color: red;
         }
     </style>
-    <script>
-        function clock() {
-            let d = new Date();
-            let hours = d.getHours();
-            let minutes = d.getMinutes();
-            let seconds = d.getSeconds();
-
-            if (hours <= 9) hours = "0" + hours;
-            if (minutes <= 9) minutes = "0" + minutes;
-            if (seconds <= 9) seconds = "0" + seconds;
-
-            let date_time = hours + ":" + minutes + ":" + seconds;
-            if (document.layers) {
-                document.layers.doc_time.document.write(date_time);
-                document.layers.doc_time.document.close();
-            } else document.getElementById("doc_time").innerHTML = date_time;
-            setTimeout("clock()", 1000);
-        }
-    </script>
+<!--    <script>-->
+<!--        function clock() {-->
+<!--            let d = new Date();-->
+<!--            let hours = d.getHours();-->
+<!--            let minutes = d.getMinutes();-->
+<!--            let seconds = d.getSeconds();-->
+<!---->
+<!--            if (hours <= 9) hours = "0" + hours;-->
+<!--            if (minutes <= 9) minutes = "0" + minutes;-->
+<!--            if (seconds <= 9) seconds = "0" + seconds;-->
+<!---->
+<!--            let date_time = hours + ":" + minutes + ":" + seconds;-->
+<!--            if (document.layers) {-->
+<!--                document.layers.doc_time.document.write(date_time);-->
+<!--                document.layers.doc_time.document.close();-->
+<!--            } else document.getElementById("doc_time").innerHTML = date_time;-->
+<!--            setTimeout("clock()", 1000);-->
+<!--        }-->
+<!--    </script>-->
 </head>
 <body>
 <div class="header">
@@ -143,13 +145,14 @@ date_default_timezone_set("UTC") ?>
         <tr>
             <td>
                 <h1>Результат проверки</h1>
+                <p><?= date("d.m.Y, G:i:s", $BEGIN_MS - $OFFSET * 60) ?></p>
                 <?php
 
-                echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
+                #echo "<p id='script'>Текущее время: <span id='doc_time'><script>clock();</script></span></p>";
 
                 if (!isset($_GET['X']) || !isset($_GET['Y']) || !isset($_GET['R']))
                     die ('<p id = \'scriptError\'>Вы не выбрали все переменные o_0</p>');
-                if (count($_GET) != 3)
+                if (count($_GET) != 4)
                     die ('<p id = \'scriptError\'>Очень странные данные! o_0</p>');
                 $x = $_GET['X'];
                 $y = $_GET['Y'];
@@ -220,12 +223,6 @@ date_default_timezone_set("UTC") ?>
                          width="100%"
                     >
                 </figure>
-                <!--    todo：это кудато деть-->
-                <!--            <td width="50%">-->
-                <!--                <canvas id="canvas" width=237px height=215px></canvas>-->
-                <!--                <img width="0" height="0" src='img/areas.png' id='img'/>-->
-                <!--            </td>-->
-
             </td>
         </tr>
         <tr>

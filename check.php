@@ -7,7 +7,14 @@ $flagX = true;
 $flagY = true;
 $flagR = true;
 
-
+if ($y == '') {
+    $flagY = false;
+    if ($justCheck) {
+        echo "emptyY\n";
+    } else {
+        echo "<p class = 'scriptError'>Y не введено.</p>";
+    }
+}
 if (!is_numeric($x) || !is_int($x + 0)) {
     $flagX = false;
     if ($justCheck) {
@@ -16,7 +23,7 @@ if (!is_numeric($x) || !is_int($x + 0)) {
         echo "<p class = 'scriptError'>x должно быть целым числом от -4 до 4.</p>";
     }
 }
-if (!is_numeric($y)) {
+if (!is_numeric($y)&&flagY) {
     $flagY = false;
     if ($justCheck) {
         echo "notNumY\n";
@@ -66,13 +73,9 @@ if (($r < 1 || $r > 5) && flagR) {
     }
 }
 if ($flagX && $flagR && $flagY) {
-    if($justCheck)
-    echo "allRight\n";
-}else{
-    $justCheck=true;
+    if ($justCheck)
+        echo "allRight\n";
+} else {
+    $justCheck = true;
 }
-
 ?>
-
-
-

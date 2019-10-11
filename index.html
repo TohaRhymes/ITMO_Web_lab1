@@ -5,8 +5,8 @@
     <title>First checker</title>
     <style>
         body {
-            background-image: url("img/back.png");
-            /*url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");*/
+            /*background-image: url("img/back.png");*/
+            background-image: url("https://media.giphy.com/media/rWY9ySfjytitq/giphy.gif");
         }
 
         .header {
@@ -158,6 +158,7 @@
                         <p class="warn-checkbox" hidden>Число выходит за пределы интервала.</p>
                         <p class="warn-checkbox" hidden>Чтобы корректно отображать ответ, понизьте количество цифр в
                             дробной части до 15.</p>
+                        <p class="warn-checkbox" hidden>Введите число.</p>
 
 
                         <h2>Радиус R:</h2>
@@ -173,6 +174,7 @@
                         </label>
                         <p class="warn-checkbox" hidden>Выбрано некорректное значение.</p>
                         <br>
+                        <input type="hidden" name="offset">
                         <button type="submit" class="submit-button" id="submit">Проверить</button>
                         <button type="button" class="submit-button" style="margin-left: 20px">Очистить</button>
                     </form>
@@ -203,8 +205,8 @@
     let warn_y_nan = document.getElementsByClassName("warn-checkbox")[1];
     let warn_y_int = document.getElementsByClassName("warn-checkbox")[2];
     let warn_y_ovf = document.getElementsByClassName("warn-checkbox")[3];
-    let warn_r_int = document.getElementsByClassName("warn-checkbox")[4];
-
+    let warn_y_emp = document.getElementsByClassName("warn-checkbox")[4];
+    let warn_r_int = document.getElementsByClassName("warn-checkbox")[5];
     let xField = document.forms["inputForm"]["X"];
     let yField = document.forms["inputForm"]["Y"];
     let rField = document.forms["inputForm"]["R"];
@@ -213,6 +215,9 @@
     let rChecked = false;
     let button = document.getElementsByClassName("submit-button")[0];
     button.setAttribute("disabled", "disable");
+
+    document.forms["inputForm"]["offset"].value = new Date().getTimezoneOffset();
+    console.log(document.forms["inputForm"]["offset"].value);
 
     function check(event) {
         checkX(event);
@@ -228,100 +233,134 @@
 
     function checkX(event) {
         xField.value = xField.value.replace(",", ".");
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "validation.php?X=" + xField.value + "&Y=\"\"&R=\"\"", true);
-        xhr.onreadystatechange = function () {
-            console.log(xhr.responseText);
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    if (xhr.responseText.includes('notX')) {
-                        event.preventDefault();
-                        xField.classList.add("warn-text");
-                        xChecked = false;
-                        warn_x_int.hidden = false;
-                    } else {
-                        xField.classList.remove("warn-text");
-                        xChecked = true;
-                        warn_x_int.hidden = true;
+        try {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "validation.php?X=" + xField.value + "&Y=\"\"&R=\"\"", true);
+            xhr.onreadystatechange = function () {
+                console.log(xhr.responseText);
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        if (xhr.responseText.includes('notX')) {
+                            event.preventDefault();
+                            xField.classList.add("warn-text");
+                            xChecked = false;
+                            warn_x_int.hidden = false;
+                        } else {
+                            xField.classList.remove("warn-text");
+                            xChecked = true;
+                            warn_x_int.hidden = true;
+                        }
+                        blockButton();
                     }
-                    blockButton();
                 }
-            }
 
+            }
+            xhr.send();
+        } catch (e) {
+            xChecked = true;
+            yChecked = true;
+            rChecked = true;
+            blockButton();
         }
-        xhr.send();
 
     }
 
     function checkY(event) {
         yField.value = yField.value.replace(",", ".");
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "validation.php?X=\"\"&Y=" + yField.value + "&R=\"\"", true);
-        xhr.onreadystatechange = function () {
-            console.log(xhr.responseText);
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    if (xhr.responseText.includes('notNumY')) {
-                        event.preventDefault();
-                        yField.classList.add("warn-text");
-                        yChecked = false;
-                        warn_y_nan.hidden = false;
-                        warn_y_int.hidden = true;
-                        warn_y_ovf.hidden = true;
-                    } else if (xhr.responseText.includes('shorterY')) {
-                        event.preventDefault();
-                        yField.classList.add("warn-text");
-                        yChecked = false;
-                        warn_y_ovf.hidden = false;
-                        warn_y_nan.hidden = true;
-                        warn_y_int.hidden = true;
-                    } else if (xhr.responseText.includes('notY')) {
-                        event.preventDefault();
-                        yField.classList.add("warn-text");
-                        yChecked = false;
-                        warn_y_int.hidden = false;
-                        warn_y_ovf.hidden = true;
-                        warn_y_nan.hidden = true;
-                    } else {
-                        yField.classList.remove("warn-text");
-                        yChecked = true;
-                        warn_y_nan.hidden = true;
-                        warn_y_int.hidden = true;
-                        warn_y_ovf.hidden = true;
+        try {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "validation.php?X=\"\"&Y=" + yField.value + "&R=\"\"", true);
+            xhr.onreadystatechange = function () {
+                console.log(xhr.responseText);
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        console.log(xhr.responseText)
+                        if (xhr.responseText.includes('emptyY')) {
+                            event.preventDefault();
+                            yField.classList.add("warn-text");
+                            yChecked = false;
+                            warn_y_emp.hidden = false;
+                            warn_y_nan.hidden = true;
+                            warn_y_int.hidden = true;
+                            warn_y_ovf.hidden = true;
+                        } else if (xhr.responseText.includes('notNumY')) {
+                            event.preventDefault();
+                            yField.classList.add("warn-text");
+                            yChecked = false;
+                            warn_y_nan.hidden = false;
+                            warn_y_int.hidden = true;
+                            warn_y_ovf.hidden = true;
+                            warn_y_emp.hidden = true;
+                        } else if (xhr.responseText.includes('shorterY')) {
+                            event.preventDefault();
+                            yField.classList.add("warn-text");
+                            yChecked = false;
+                            warn_y_ovf.hidden = false;
+                            warn_y_nan.hidden = true;
+                            warn_y_int.hidden = true;
+                            warn_y_emp.hidden = true;
+                        } else if (xhr.responseText.includes('notY')) {
+                            event.preventDefault();
+                            yField.classList.add("warn-text");
+                            yChecked = false;
+                            warn_y_int.hidden = false;
+                            warn_y_ovf.hidden = true;
+                            warn_y_nan.hidden = true;
+                            warn_y_emp.hidden = true;
+                        } else {
+                            yField.classList.remove("warn-text");
+                            yChecked = true;
+                            warn_y_nan.hidden = true;
+                            warn_y_int.hidden = true;
+                            warn_y_ovf.hidden = true;
+                            warn_y_emp.hidden = true;
+                        }
+                        blockButton();
                     }
-                    blockButton();
                 }
+
+
             }
-
-
+            xhr.send();
+        } catch (e) {
+            xChecked = true;
+            yChecked = true;
+            rChecked = true;
+            blockButton();
         }
-        xhr.send();
     }
 
     function checkR(event) {
         rField.value = rField.value.replace(",", ".");
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "validation.php?X=\"\"&Y=\"\"&R=" + rField.value, true);
-        xhr.onreadystatechange = function () {
-            console.log(xhr.responseText);
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    if (xhr.responseText.includes('notR')) {
-                        event.preventDefault();
-                        rField.classList.add("warn-text");
-                        rChecked = false;
-                        warn_r_int.hidden = false;
-                    } else {
-                        rField.classList.remove("warn-text");
-                        rChecked = true;
-                        warn_r_int.hidden = true;
+        try {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "validation.php?X=\"\"&Y=\"\"&R=" + rField.value, true);
+            xhr.onreadystatechange = function () {
+                console.log(xhr.responseText);
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        if (xhr.responseText.includes('notR')) {
+                            event.preventDefault();
+                            rField.classList.add("warn-text");
+                            rChecked = false;
+                            warn_r_int.hidden = false;
+                        } else {
+                            rField.classList.remove("warn-text");
+                            rChecked = true;
+                            warn_r_int.hidden = true;
+                        }
+                        blockButton();
                     }
-                    blockButton();
                 }
-            }
 
+            }
+            xhr.send();
+        } catch (e) {
+            xChecked = true;
+            yChecked = true;
+            rChecked = true;
+            blockButton();
         }
-        xhr.send();
 
     }
 
